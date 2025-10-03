@@ -22,16 +22,24 @@
       margin-bottom: 25px;
       font-size: 24px;
     }
-    select {
+    select, input, button {
       width: 100%;
       padding: 14px;
       margin: 12px 0;
       border-radius: 25px;
       border: none;
-      background-color: #1e1e1e;
-      color: white;
       font-size: 16px;
       outline: none;
+    }
+    select, input {
+      background-color: #1e1e1e;
+      color: white;
+    }
+    button {
+      background-color: #82ceeb;
+      color: #121212;
+      font-weight: bold;
+      cursor: pointer;
     }
     .number-link {
       display: block;
@@ -54,39 +62,33 @@
       color: #aaa;
     }
 
-    /* Kayan yaz yuvarlak */
-    .circle-marquee {
-      width: 250px;
-      height: 250px;
-      border: 4px solid white;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    /* Alttan kayan yaz */
+    .bottom-marquee {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: #121212;
+      white-space: nowrap;
       overflow: hidden;
-      position: relative;
-      margin: 20px auto;
+      box-sizing: border-box;
+      border-top: 2px solid #333;
+      padding: 8px 0;
     }
-    .circle-marquee span {
-      font-size: 22px;
+    .bottom-marquee span {
+      display: inline-block;
+      font-size: 20px;
       font-weight: bold;
       color: white;
-      position: absolute;
-      white-space: nowrap;
-      animation: scrollText 8s linear infinite;
+      padding-left: 100%;
+      animation: marquee 12s linear infinite;
     }
-    @keyframes scrollText {
-      from { transform: translateX(100%); }
-      to { transform: translateX(-100%); }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
     }
   </style>
 </head>
 <body>
-  <!-- Kayan yaz -->
-  <div class="circle-marquee">
-    <span>MC AI PRODUCT C</span>
-  </div>
-
   <div class="container">
     <h1> iTALiAN PSAP NUMBERS </h1>
     
@@ -115,6 +117,26 @@
        Emergency anywhere in Italy:  
       <a href="tel:+39113" class="number-link">+39 113 (Police)</a>
     </div>
+  </div>
+
+  <!-- Google arama ksm -->
+  <div class="container" style="margin-top: 40px; border-top: 1px solid #333; padding-top: 30px;">
+    <h1> Find Nearby Emergency Services</h1>
+    <input type="text" id="addressInput" placeholder="Enter address (e.g., Via Roma 123, Milano)" />
+    
+    <select id="serviceSelect">
+      <option value="">— Select Service —</option>
+      <option value="police">Police</option>
+      <option value="ambulance">Ambulance</option>
+      <option value="fire department">Fire Department</option>
+    </select>
+
+    <button onclick="searchNearby()">Search</button>
+  </div>
+
+  <!-- Alttan kayan yaz -->
+  <div class="bottom-marquee">
+    <span>MURAT AI</span>
   </div>
 
   <script>
@@ -155,6 +177,22 @@
           <a href="tel:${psap}" class="number-link">+39 113</a>
         `;
       }
+    }
+
+    function searchNearby() {
+      const address = document.getElementById("addressInput").value.trim();
+      const service = document.getElementById("serviceSelect").value;
+
+      if (!address || !service) {
+        alert("Please enter an address and select a service.");
+        return;
+      }
+
+      const query = `${service} near ${address}`;
+      const encodedQuery = encodeURIComponent(query);
+      const googleUrl = `https://www.google.com/search?q=${encodedQuery}`;
+
+      window.open(googleUrl, '_blank');
     }
   </script>
 </body>
